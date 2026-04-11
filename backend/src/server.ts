@@ -21,7 +21,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: process.env.FRONTEND_URL ,
   credentials: true
 }));
 app.use(express.json());
@@ -36,7 +36,7 @@ app.use('/api/stats', statsRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/owl', owlRoutes);
 
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/aetheria')
+mongoose.connect('process.env.MONGO_URI')
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log(err));
 
@@ -45,5 +45,5 @@ app.get('/', (req: Request, res: Response) => res.send('Hello from backend'));
 // Error handling middleware
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT ;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
