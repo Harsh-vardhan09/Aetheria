@@ -8,9 +8,8 @@
     "shared"
   ],
   "scripts": {
-    "install-all": "npm install",
-    "start": "concurrently \"npm run start --workspace=backend\" \"npm run start --workspace=frontend\"",
-    "dev": "concurrently \"npm run dev --workspace=backend\" \"npm run dev --workspace=frontend\""
+    "build": "cd frontend && npm install && npm run build && cd ../backend && npm install && npm run build",
+    "start": "cd backend && node dist/server.js"
   },
   "devDependencies": {
     "concurrently": "^8.2.0"

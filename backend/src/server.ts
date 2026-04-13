@@ -2,6 +2,9 @@ import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+
+
 
 // Import routes
 import authRoutes from './routes/auth';
@@ -36,14 +39,26 @@ app.use('/api/stats', statsRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/owl', owlRoutes);
 
-mongoose.connect('process.env.MONGO_URI')
+const frontendPath = path.resolve(__dirname, "../../frontend/dist");
+console.log("Serving frontend from:", frontendPath);
+app.use(express.static(frontendPath));
+
+
+mongoose.connect(process.env.MONGO_URI!)
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log(err));
 
-app.get('/', (req: Request, res: Response) => res.send('Hello from backend'));
+// app.get('/', (req: Request, res: Response) => res.send('Hello from backend'));
 
 // Error handling middleware
-app.use(errorHandler);
 
+
+console.log("Frontend Path:", frontendPath);
+
+app.all("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
+
+app.use(errorHandler);
 const PORT = process.env.PORT ;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
